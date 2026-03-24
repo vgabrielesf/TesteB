@@ -16,7 +16,7 @@
     }
   </script>
   <style>
-    body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; background: #22232a; }
+    body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; background: #7a8a9a; }
     
     #info {
       position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%);
@@ -64,9 +64,10 @@
 
     #footer {
         position: fixed; bottom: 15px; width: 100%;
-        color: rgba(255,255,255,0.6);
+        color: rgba(255,255,255,0.8);
         text-align: center; font-size: 12px;
         z-index: 100; pointer-events: none;
+        font-weight: bold;
     }
 
     .controls-container::-webkit-scrollbar { width: 4px; }
@@ -75,7 +76,7 @@
 </head>
 <body>
 
-  <div id="info">Carregando Barco...</div>
+  <div id="info">Carregando Modelo...</div>
 
   <div class="controls-container">
     <button id="toggleBg" class="btn-ui"><span class="material-symbols-outlined">routine</span> Alterar Fundo</button>
@@ -84,22 +85,20 @@
     <div id="pickerSofas" class="color-picker">
         <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div>
         <div class="color-box" style="background: #f5f5f5;" data-color="#f5f5f5"></div>
-        <div class="color-box" style="background: #e9e4d4;" data-color="#e9e4d4"></div>
         <div class="color-box" style="background: #dcdcdc;" data-color="#dcdcdc"></div>
-        
-        <div class="color-box" style="background: #a2b9bc;" data-color="#a2b9bc"></div>
-        <div class="color-box" style="background: #9caf88;" data-color="#9caf88"></div>
-        <div class="color-box" style="background: #002366;" data-color="#002366"></div> <div class="color-box" style="background: #be9b7b;" data-color="#be9b7b"></div>
-        
-        <div class="color-box" style="background: #b65d4c;" data-color="#b65d4c"></div>
-        <div class="color-box" style="background: #708090;" data-color="#708090"></div>
-        <div class="color-box" style="background: #1c3d5a;" data-color="#1c3d5a"></div> <div class="color-box" style="background: #4b2c20;" data-color="#4b2c20"></div>
-        
-        <div class="color-box" style="background: #363636;" data-color="#363636"></div>
+        <div class="color-box" style="background: #a9a9a9;" data-color="#a9a9a9"></div>
+        <div class="color-box" style="background: #f4a460;" data-color="#f4a460"></div>
+        <div class="color-box" style="background: #cd853f;" data-color="#cd853f"></div>
+        <div class="color-box" style="background: #8b4513;" data-color="#8b4513"></div>
+        <div class="color-box" style="background: #4b2c20;" data-color="#4b2c20"></div>
+        <div class="color-box" style="background: #add8e6;" data-color="#add8e6"></div>
+        <div class="color-box" style="background: #4682b4;" data-color="#4682b4"></div>
+        <div class="color-box" style="background: #000080;" data-color="#000080"></div>
         <div class="color-box" style="background: #191970;" data-color="#191970"></div>
-        <div class="color-box" style="background: #1a1a1a;" data-color="#1a1a1a"></div>
+        <div class="color-box" style="background: #2e7d32;" data-color="#2e7d32"></div>
+        <div class="color-box" style="background: #c62828;" data-color="#c62828"></div>
+        <div class="color-box" style="background: #333333;" data-color="#333333"></div>
         <div class="color-box" style="background: #000000;" data-color="#000000"></div>
-        
         <div class="custom-label">COR PERSONALIZADA:</div>
         <input type="color" id="customSofas" class="input-custom" value="#ffffff">
     </div>
@@ -109,8 +108,10 @@
         <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div>
         <div class="color-box" style="background: #f0f8ff;" data-color="#f0f8ff"></div>
         <div class="color-box" style="background: #e5e4e2;" data-color="#e5e4e2"></div>
-        <div class="color-box" style="background: #002366;" data-color="#002366"></div> <div class="color-box" style="background: #001233;" data-color="#001233"></div>
-        <div class="color-box" style="background: #1c3d5a;" data-color="#1c3d5a"></div> <div class="color-box" style="background: #5a5e6b;" data-color="#5a5e6b"></div>
+        <div class="color-box" style="background: #002366;" data-color="#002366"></div>
+        <div class="color-box" style="background: #001233;" data-color="#001233"></div>
+        <div class="color-box" style="background: #1c3d5a;" data-color="#1c3d5a"></div>
+        <div class="color-box" style="background: #5a5e6b;" data-color="#5a5e6b"></div>
         <div class="color-box" style="background: #2c3e50;" data-color="#2c3e50"></div>
         <div class="color-box" style="background: #1a1a1a;" data-color="#1a1a1a"></div>
         <div class="color-box" style="background: #2d5a27;" data-color="#2d5a27"></div>
@@ -129,10 +130,10 @@
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
     const scene = new THREE.Scene();
+    const LIGHT_BG = 0x7a8a9a; // Cor inicial clara
     const DARK_BG = 0x22232a;
-    const LIGHT_BG = 0x7a8a9a;
-    let isDark = true;
-    scene.background = new THREE.Color(DARK_BG);
+    let isDark = false; // Começa como FALSO para ser o tema claro
+    scene.background = new THREE.Color(LIGHT_BG);
 
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(12, 10, 18);
@@ -206,6 +207,8 @@
     document.getElementById('toggleBg').onclick = () => {
       isDark = !isDark;
       scene.background.set(isDark ? DARK_BG : LIGHT_BG);
+      // Ajusta a cor do texto do rodapé para contraste
+      document.getElementById('footer').style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.8)';
     };
 
     function animate() {
