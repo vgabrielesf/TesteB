@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Modelo 3D - Alterar Cor Específica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.156.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.156.1/examples/jsm/"
+      }
+    }
+  </script>
+  <style>
+    body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    
+    #info {
+      position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+      color: white; background: rgba(0,0,0,0.7); padding: 15px 22px;
+      border-radius: 8px; z-index: 100; max-width: 350px; font-size: 15px;
+      pointer-events: none; transition: opacity 0.3s;
+    }
+
+    /* Estilo para os botões de interface */
+    .controls-container {
+      position: absolute; top: 10px; left: 10px; z-index: 101;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .btn-ui {
+      padding: 10px 15px; border-radius: 8px; border: none;
+      background: #eee; color: #222; font-size: 14px;
+      cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .hidden { opacity: 0; visibility: hidden; }
+  </style>
+</head>
+<body>
+  <div id="info">Inicializando Three.js...</div>
+
+  <div class="controls-container">
+    <button id="toggleBg" class="btn-ui">Alternar Fundo</button>
+    
+    <button id="changeColorBtn" class="btn-ui" style="background: #4CAF50; color: white;">
+      Mudar Cor do Objeto
+    </button>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const infoDiv = document.getElementById('info');
+    const toggleBgBtn = document.getElementById('toggleBg');
+    const changeColorBtn = document.getElementById('changeColorBtn');
+
+    // Configurações de Cena
+    const LIGHT_BG = 0x7a8a9a;
+    const DARK_BG = 0x22232a;
+    let isDark = true;
+    
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(DARK_BG);
+    
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(4, 3, 16);
+    
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    document.body.appendChild(renderer.domElement);
+    
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Iluminação
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    let model = null;
+    let targetObject = null; // Variável para armazenar o objeto específico
+
+    // Carregar modelo GLB
+    const loader = new GLTFLoader();
+    loader.load(
+      'model7.glb',
+      function(gltf) {
+        model = gltf.scene;
+        
+        // Percorrer o modelo para encontrar o objeto pelo NOME
+        model.traverse((child) => {
+          if (child.isMesh) {
+            // Verifica se o nome do objeto coincide com o solicitado
+            if (child.name === "arch48_003_obj_05") {
+              targetObject = child;
+              console.log("Objeto encontrado:", targetObject);
+            }
+          }
+        });
+
+        // Centralizar
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        
+        scene.add(model);
+        infoDiv.innerHTML = 'Modelo carregado. Use o botão verde para mudar a cor do objeto.';
+        setTimeout(() => { infoDiv.classList.add('hidden'); }, 3000);
+      },
+      (progress) => { /* progresso... */ },
+      (error) => { infoDiv.innerHTML = "Erro ao carregar modelo."; }
+    );
+
+    // FUNÇÃO PARA MUDAR A COR
+    function changePartColor() {
+      if (targetObject) {
+        // Gerar uma cor aleatória
+        const newColor = new THREE.Color(Math.random(), Math.random(), Math.random());
+        
+        // Aplicar ao material (importante clonar se o material for compartilhado)
+        if (targetObject.material) {
+          targetObject.material = targetObject.material.clone();
+          targetObject.material.color.set(newColor);
+          infoDiv.innerHTML = `Cor de ${targetObject.name} alterada!`;
+          infoDiv.classList.remove('hidden');
+        }
+      } else {
+        alert("Objeto 'arch48_003_obj_05' não encontrado no modelo.");
+      }
+    }
+
+    // Eventos dos Botões
+    changeColorBtn.addEventListener('click', changePartColor);
+
+    toggleBgBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      scene.background.set(isDark ? DARK_BG : LIGHT_BG);
+      toggleBgBtn.style.background = isDark ? '#eee' : '#222';
+      toggleBgBtn.style.color = isDark ? '#222' : '#fff';
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+  </script>
+</body>
+</html>
