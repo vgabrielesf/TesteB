@@ -19,7 +19,7 @@
     body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; background: #22232a; }
     
     #info {
-      position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%);
+      position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%);
       color: white; background: rgba(0,0,0,0.8); padding: 12px 20px;
       border-radius: 30px; z-index: 100; font-size: 14px; pointer-events: none;
     }
@@ -62,12 +62,12 @@
     .custom-label { grid-column: span 4; font-size: 11px; font-weight: bold; margin-top: 8px; color: #666; text-align: center; }
     .input-custom { width: 100%; height: 35px; cursor: pointer; border: none; grid-column: span 4; background: none; padding: 0; }
 
+    /* Rodapé Limpo */
     #footer {
-        position: fixed; bottom: 0; width: 100%;
-        background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.7);
-        text-align: center; padding: 10px 0; font-size: 12px;
-        letter-spacing: 1px; z-index: 100; backdrop-filter: blur(5px);
-        text-transform: uppercase; font-weight: 300;
+        position: fixed; bottom: 15px; width: 100%;
+        color: rgba(255,255,255,0.6);
+        text-align: center; font-size: 12px;
+        z-index: 100; pointer-events: none;
     }
 
     .controls-container::-webkit-scrollbar { width: 4px; }
@@ -84,11 +84,14 @@
     <button id="btnSofas" class="btn-ui"><span class="material-symbols-outlined">chair</span> Cores do Estofado</button>
     <div id="pickerSofas" class="color-picker">
         <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div>
-        <div class="color-box" style="background: #e9e4d4;" data-color="#e9e4d4"></div> <div class="color-box" style="background: #be9b7b;" data-color="#be9b7b"></div> <div class="color-box" style="background: #4b2c20;" data-color="#4b2c20"></div> <div class="color-box" style="background: #dcdcdc;" data-color="#dcdcdc"></div>
+        <div class="color-box" style="background: #e9e4d4;" data-color="#e9e4d4"></div>
+        <div class="color-box" style="background: #be9b7b;" data-color="#be9b7b"></div>
+        <div class="color-box" style="background: #4b2c20;" data-color="#4b2c20"></div>
+        <div class="color-box" style="background: #dcdcdc;" data-color="#dcdcdc"></div>
         <div class="color-box" style="background: #708090;" data-color="#708090"></div>
         <div class="color-box" style="background: #191970;" data-color="#191970"></div>
         <div class="color-box" style="background: #000000;" data-color="#000000"></div>
-        <div class="custom-label">COR PERSONALIZADA:</div>
+        <div class="color-box" style="background: #9caf88;" data-color="#9caf88"></div> <div class="color-box" style="background: #363636;" data-color="#363636"></div> <div class="color-box" style="background: #b65d4c;" data-color="#b65d4c"></div> <div class="color-box" style="background: #a2b9bc;" data-color="#a2b9bc"></div> <div class="custom-label">COR PERSONALIZADA:</div>
         <input type="color" id="customSofas" class="input-custom" value="#ffffff">
     </div>
 
@@ -97,7 +100,16 @@
         <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div>
         <div class="color-box" style="background: #f0f8ff;" data-color="#f0f8ff"></div>
         <div class="color-box" style="background: #e5e4e2;" data-color="#e5e4e2"></div>
-        <div class="color-box" style="background: #002366;" data-color="#002366"></div> <div class="color-box" style="background: #001233;" data-color="#001233"></div> <div class="color-box" style="background: #1c3d5a;" data-color="#1c3d5a"></div> <div class="color-box" style="background: #5a5e6b;" data-color="#5a5e6b"></div> <div class="color-box" style="background: #2c3e50;" data-color="#2c3e50"></div> <div class="color-box" style="background: #1a1a1a;" data-color="#1a1a1a"></div> <div class="color-box" style="background: #2d5a27;" data-color="#2d5a27"></div> <div class="color-box" style="background: #4a0404;" data-color="#4a0404"></div> <div class="color-box" style="background: #daa520;" data-color="#daa520"></div> <div class="custom-label">COR PERSONALIZADA:</div>
+        <div class="color-box" style="background: #002366;" data-color="#002366"></div>
+        <div class="color-box" style="background: #001233;" data-color="#001233"></div>
+        <div class="color-box" style="background: #1c3d5a;" data-color="#1c3d5a"></div>
+        <div class="color-box" style="background: #5a5e6b;" data-color="#5a5e6b"></div>
+        <div class="color-box" style="background: #2c3e50;" data-color="#2c3e50"></div>
+        <div class="color-box" style="background: #1a1a1a;" data-color="#1a1a1a"></div>
+        <div class="color-box" style="background: #2d5a27;" data-color="#2d5a27"></div>
+        <div class="color-box" style="background: #4a0404;" data-color="#4a0404"></div>
+        <div class="color-box" style="background: #daa520;" data-color="#daa520"></div>
+        <div class="custom-label">COR PERSONALIZADA:</div>
         <input type="color" id="customExterno" class="input-custom" value="#ffffff">
     </div>
   </div>
