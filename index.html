@@ -30,11 +30,17 @@
         max-height: 80vh; overflow-y: auto; padding-right: 10px;
     }
 
+    /* Botões com Hover Azul Acinzentado */
     .btn-ui {
       padding: 12px 18px; border-radius: 10px; border: none;
       background: white; color: #333; font-size: 14px;
       cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 260px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .btn-ui:hover {
+      background: #5a6a7a; /* Azul Acinzentado mais escuro para destaque */
+      color: white;
     }
 
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
@@ -52,11 +58,16 @@
     }
     .color-picker.show { display: grid; }
     
+    /* Quadrados com Contorno Preto no Hover */
     .color-box { 
         width: 45px; height: 45px; border-radius: 8px; 
         cursor: pointer; 
-        border: 2px solid rgba(0,0,0,0.05);
+        border: 2px solid transparent;
         box-sizing: border-box;
+        transition: border 0.2s;
+    }
+    .color-box:hover {
+        border: 2px solid #000000;
     }
 
     .custom-label { grid-column: span 4; font-size: 11px; font-weight: bold; margin-top: 8px; color: #666; text-align: center; }
@@ -64,10 +75,10 @@
 
     #footer {
         position: fixed; bottom: 15px; width: 100%;
-        color: rgba(255,255,255,0.8);
+        color: rgba(255,255,255,0.9);
         text-align: center; font-size: 12px;
         z-index: 100; pointer-events: none;
-        font-weight: bold;
+        font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
     .controls-container::-webkit-scrollbar { width: 4px; }
@@ -83,23 +94,7 @@
     
     <button id="btnSofas" class="btn-ui"><span class="material-symbols-outlined">chair</span> Cores do Estofado</button>
     <div id="pickerSofas" class="color-picker">
-        <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div>
-        <div class="color-box" style="background: #f5f5f5;" data-color="#f5f5f5"></div>
-        <div class="color-box" style="background: #dcdcdc;" data-color="#dcdcdc"></div>
-        <div class="color-box" style="background: #a9a9a9;" data-color="#a9a9a9"></div>
-        <div class="color-box" style="background: #f4a460;" data-color="#f4a460"></div>
-        <div class="color-box" style="background: #cd853f;" data-color="#cd853f"></div>
-        <div class="color-box" style="background: #8b4513;" data-color="#8b4513"></div>
-        <div class="color-box" style="background: #4b2c20;" data-color="#4b2c20"></div>
-        <div class="color-box" style="background: #add8e6;" data-color="#add8e6"></div>
-        <div class="color-box" style="background: #4682b4;" data-color="#4682b4"></div>
-        <div class="color-box" style="background: #000080;" data-color="#000080"></div>
-        <div class="color-box" style="background: #191970;" data-color="#191970"></div>
-        <div class="color-box" style="background: #2e7d32;" data-color="#2e7d32"></div>
-        <div class="color-box" style="background: #c62828;" data-color="#c62828"></div>
-        <div class="color-box" style="background: #333333;" data-color="#333333"></div>
-        <div class="color-box" style="background: #000000;" data-color="#000000"></div>
-        <div class="custom-label">COR PERSONALIZADA:</div>
+        <div class="color-box" style="background: #ffffff;" data-color="#ffffff"></div> <div class="color-box" style="background: #f5f5f0;" data-color="#f5f5f0"></div> <div class="color-box" style="background: #e3dac9;" data-color="#e3dac9"></div> <div class="color-box" style="background: #d2b48c;" data-color="#d2b48c"></div> <div class="color-box" style="background: #bc987e;" data-color="#bc987e"></div> <div class="color-box" style="background: #8e735b;" data-color="#8e735b"></div> <div class="color-box" style="background: #4b3621;" data-color="#4b3621"></div> <div class="color-box" style="background: #c0c0c0;" data-color="#c0c0c0"></div> <div class="color-box" style="background: #708090;" data-color="#708090"></div> <div class="color-box" style="background: #2f4f4f;" data-color="#2f4f4f"></div> <div class="color-box" style="background: #191970;" data-color="#191970"></div> <div class="color-box" style="background: #000000;" data-color="#000000"></div> <div class="custom-label">COR PERSONALIZADA:</div>
         <input type="color" id="customSofas" class="input-custom" value="#ffffff">
     </div>
 
@@ -130,9 +125,9 @@
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
     const scene = new THREE.Scene();
-    const LIGHT_BG = 0x7a8a9a; // Cor inicial clara
+    const LIGHT_BG = 0x7a8a9a; 
     const DARK_BG = 0x22232a;
-    let isDark = false; // Começa como FALSO para ser o tema claro
+    let isDark = false; 
     scene.background = new THREE.Color(LIGHT_BG);
 
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -207,8 +202,6 @@
     document.getElementById('toggleBg').onclick = () => {
       isDark = !isDark;
       scene.background.set(isDark ? DARK_BG : LIGHT_BG);
-      // Ajusta a cor do texto do rodapé para contraste
-      document.getElementById('footer').style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.8)';
     };
 
     function animate() {
